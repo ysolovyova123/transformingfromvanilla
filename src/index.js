@@ -11,6 +11,16 @@ class Main extends React.Component {
     }
     this.destroy = this.destroy.bind(this)
     this.updateRating = this.updateRating.bind(this)
+    this.create = this.create.bind(this)
+  }
+
+  async create() {
+    await axios.post(`api/friends/`)
+    const response = await axios.get('api/friends')
+    const data = response.data // json data is actually stored on the data property
+    this.setState({
+      friends: data
+    })
   }
 
   async destroy(id) {
@@ -42,9 +52,14 @@ class Main extends React.Component {
 
   render() {
     if (this.state.friends.length > 0) {
-    return this.state.friends.map(friend => {return (
-      <Details key={friend.id} name={friend.name} rating={friend.rating} destroy = {this.destroy} id = {friend.id} updateRating = {this.updateRating}/>
+    return (
+    <div>
+      <button onClick={() => this.create()}>Create A Friend</button>
+      {this.state.friends.map(friend => {return (
+      <Details key={friend.id} name={friend.name} rating={friend.rating} destroy = {this.destroy} id = {friend.id} updateRating = {this.updateRating} create = {this.create} />
     )})}
+    </div>
+    )}
     else {
       return <div>Loading</div>
     }
