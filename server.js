@@ -13,7 +13,8 @@ app.get('/', (req, res, next)=> res.sendFile(path.join(__dirname, 'index.html'))
 
 app.get('/api/friends', async (req, res, next)=> {
   try {
-    res.send(await Friend.findAll({ order: [['rating', 'desc']]}));
+    const friends = await Friend.findAll({ order: [['rating', 'desc']]});
+    res.json(friends)
   }
   catch(ex){
     next(ex);
